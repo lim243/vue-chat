@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import Chat from "../views/Chat.vue";
+import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
 
 const routes = [
@@ -10,11 +11,17 @@ const routes = [
     component: Login,
   },
   {
+    path: "/register",
+    name: "Register",
+    component: Register,
+  },
+  {
     path: "/chat",
     name: "Chat",
     component: Chat,
     props: true,
     beforeEnter: (to, from, next) => {
+      console.log("to", to);
       if (to.params.name) {
         next();
       } else {

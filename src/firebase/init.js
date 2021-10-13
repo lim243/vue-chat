@@ -15,6 +15,9 @@ import {
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import firebaseConfig from "./firebaseConfig";
 
@@ -91,8 +94,10 @@ const checkAuth = () => {
 
 export {
   auth,
+  getAuth,
   emailAuth,
   checkAuth,
+  createUserWithEmailAndPassword,
   db,
   collection,
   query,
@@ -102,4 +107,6 @@ export {
   doc,
   setDoc,
   addDoc,
+  signInWithEmailAndPassword,
+  updateProfile,
 };
