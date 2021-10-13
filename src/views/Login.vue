@@ -30,9 +30,16 @@ export default {
       errorText: null,
     };
   },
+  mounted() {
+    if (localStorage.name) {
+      this.name = localStorage.name;
+      this.login();
+    }
+  },
   methods: {
     login() {
       if (this.name) {
+        localStorage.setItem("name", this.name);
         this.$router.push({ name: "Chat", params: { name: this.name } });
       } else {
         this.errorText = "Bruh, no name provided!";

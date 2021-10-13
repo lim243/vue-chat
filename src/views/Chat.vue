@@ -21,6 +21,9 @@
         <CreateMessage :name="name" />
       </div>
     </div>
+
+    <h6 class="text-secondary">Logged in as {{name}}</h6>
+    <button class="btn btn-secondary" @click="logout">Logout</button>
   </div>
 </template>
 
@@ -39,6 +42,12 @@ export default {
     return {
       messages: [],
     };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("name");
+      this.$router.push({ name: "Login", params: { name: this.name } });
+    },
   },
   created() {
     const q = query(collection(db, "messages"), orderBy("timestamp"));
