@@ -18,12 +18,11 @@
       </div>
 
       <div class="card-action">
-        <CreateMessage :name="name" />
+        <CreateMessage :name="user.data.displayName" />
       </div>
     </div>
 
-    <h6 class="text-secondary">Logged in as {{ name }}</h6>
-    <button class="btn btn-secondary" @click="logout">Logout</button>
+    <h6 class="text-secondary">Logged in as {{ user.data.displayName }}</h6>
 
     <div class="player">
       <Spotify />
@@ -33,7 +32,6 @@
 
 <script>
 import CreateMessage from "@/components/CreateMessage";
-import Spotify from "@/components/Spotify";
 import { db, collection, query, orderBy, onSnapshot } from "@/firebase/init";
 import moment from "moment";
 import { mapGetters } from "vuex";
@@ -43,7 +41,6 @@ export default {
   props: ["name"],
   components: {
     CreateMessage,
-    Spotify,
   },
   data() {
     return {
@@ -61,7 +58,6 @@ export default {
     onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          console.log("New message: ", change.doc.data());
           let doc = change.doc;
           this.messages.push({
             id: doc.id,
@@ -69,14 +65,6 @@ export default {
             message: doc.data().message,
             timestamp: moment(doc.data().timestamp).format("LTS"),
           });
-        }
-
-        // For future use
-        if (change.type === "modified") {
-          console.log("Modified city: ", change.doc.data());
-        }
-        if (change.type === "removed") {
-          console.log("Removed city: ", change.doc.data());
         }
       });
     });
@@ -113,10 +101,5 @@ export default {
 
 .message {
   text-align: left;
-}
-
-.player {
-  padding-top: 200px;
-  background-color: black;
 }
 </style>

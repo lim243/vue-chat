@@ -31,11 +31,18 @@
         </form>
       </div>
     </div>
+
+    <button class="btn btn-danger" @click="googleSignIn">Google Sign In</button>
   </div>
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword } from "@/firebase/init";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "@/firebase/init";
 
 export default {
   name: "login",
@@ -55,10 +62,8 @@ export default {
           // Signed in
           const user = userCredential.user;
           console.log("user signned in", user);
-          console.log('user.displayName', user.displayName);
           this.$router.push({
             name: "Chat",
-            params: { name: user.displayName },
           });
           // ...
         })
@@ -70,6 +75,35 @@ export default {
             errorCode,
             errorMessage
           );
+        });
+    },
+    googleSignIn() {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          console.log('user, token', user, token);
+          this.$router.push({
+            name: "Chat",
+          });
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+
+          console.log('error in Google', errorCode, errorMessage, email, credential);
         });
     },
   },

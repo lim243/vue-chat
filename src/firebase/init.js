@@ -17,6 +17,8 @@ import {
   updateProfile,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import firebaseConfig from "./firebaseConfig";
 // import store from "../store";
@@ -44,4 +46,6 @@ export {
   updateProfile,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 };

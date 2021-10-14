@@ -17,7 +17,7 @@
         <ul class="navbar-nav mr-auto"></ul>
         <ul class="navbar-nav ml-auto">
           <template v-if="user.loggedIn">
-            <div class="nav-item">{{ user.data.displayName }}</div>
+            <router-link to="/chat" class="navbar-brand">Chat</router-link>
             <li class="nav-item">
               <a class="nav-link" @click.prevent="logout">Sign out</a>
             </li>
@@ -48,12 +48,11 @@ export default {
   methods: {
     logout() {
       const auth = getAuth();
-        signOut(auth)
-        .then(() => {
-          this.$router.push({
-            name: "Home",
-          });
+      signOut(auth).then(() => {
+        this.$router.push({
+          name: "Home",
         });
+      });
     },
   },
 };
