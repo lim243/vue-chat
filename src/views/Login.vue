@@ -33,6 +33,7 @@
     </div>
 
     <button class="btn btn-danger" @click="googleSignIn">Google Sign In</button>
+    <button class="btn btn-dark" @click="githubSignIn">Github Sign In</button>
   </div>
 </template>
 
@@ -42,6 +43,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  GithubAuthProvider,
 } from "@/firebase/init";
 
 export default {
@@ -87,7 +89,7 @@ export default {
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          console.log('user, token', user, token);
+          console.log("user, token", user, token);
           this.$router.push({
             name: "Chat",
           });
@@ -103,7 +105,44 @@ export default {
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
 
-          console.log('error in Google', errorCode, errorMessage, email, credential);
+          console.log(
+            "error in Google",
+            errorCode,
+            errorMessage,
+            email,
+            credential
+          );
+        });
+    },
+    githubSignIn() {
+      const auth = getAuth();
+      const provider = new GithubAuthProvider();
+
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+          const credential = GithubAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+
+          // The signed-in user info.
+          const user = result.user;
+
+          console.log('github token', token, user);
+          this.$router.push({
+            name: "Chat",
+          });
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GithubAuthProvider.credentialFromError(error);
+          console.log('errorCode in github', errorCode, errorMessage, email, credential);
+          // ...
         });
     },
   },

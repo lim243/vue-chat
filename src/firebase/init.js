@@ -19,6 +19,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  GithubAuthProvider,
 } from "firebase/auth";
 import firebaseConfig from "./firebaseConfig";
 // import store from "../store";
@@ -48,4 +49,5 @@ export {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  GithubAuthProvider,
 };
