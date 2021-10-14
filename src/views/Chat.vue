@@ -22,21 +22,28 @@
       </div>
     </div>
 
-    <h6 class="text-secondary">Logged in as {{name}}</h6>
+    <h6 class="text-secondary">Logged in as {{ name }}</h6>
     <button class="btn btn-secondary" @click="logout">Logout</button>
+
+    <div class="player">
+      <Spotify />
+    </div>
   </div>
 </template>
 
 <script>
 import CreateMessage from "@/components/CreateMessage";
+import Spotify from "@/components/Spotify";
 import { db, collection, query, orderBy, onSnapshot } from "@/firebase/init";
 import moment from "moment";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Chat",
   props: ["name"],
   components: {
     CreateMessage,
+    Spotify,
   },
   data() {
     return {
@@ -74,6 +81,12 @@ export default {
       });
     });
   },
+  computed: {
+    // map `this.user` to `this.$store.getters.user`
+    ...mapGetters({
+      user: "user"
+    })
+  }
 };
 </script>
 
@@ -100,5 +113,10 @@ export default {
 
 .message {
   text-align: left;
+}
+
+.player {
+  padding-top: 200px;
+  background-color: black;
 }
 </style>
