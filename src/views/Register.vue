@@ -85,6 +85,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "@/firebase/init";
+import store from '../store';
 
 export default {
   data() {
@@ -109,16 +110,14 @@ export default {
           })
             .then(() => {
               console.log("Profile updateed!");
+              store.dispatch("fetchUser", user);
               this.$router.push({
-                name: "Chat",
-                params: { name: this.name },
+                name: "Chat"
               });
             })
             .catch((err) => {
               console.log("err in update name!", err);
             });
-
-          console.log("user", user);
           // ...
         })
         .catch((error) => {

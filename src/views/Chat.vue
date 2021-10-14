@@ -47,12 +47,6 @@ export default {
       messages: [],
     };
   },
-  methods: {
-    logout() {
-      localStorage.removeItem("name");
-      this.$router.push({ name: "Login", params: { name: this.name } });
-    },
-  },
   created() {
     const q = query(collection(db, "messages"), orderBy("timestamp"));
     onSnapshot(q, (snapshot) => {
