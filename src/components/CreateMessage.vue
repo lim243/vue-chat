@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <form class="inline" @submit.prevent="createMessage">
-      <div class="form-group row">
-        <div class="col-sm-10">
+      <div class="form-group new-message-field">
+
           <input
             type="text"
             class="form-control"
@@ -10,20 +10,18 @@
             placeholder="Enter something here..."
             v-model="newMessage"
           />
-        </div>
-        <div class="col-sm-1">
+
           <DiscordPicker
             :showEmoji="showEmoji"
             :apiKey="apiKey"
             @emoji="setEmoji"
+            class= "picker"
           />
-        </div>
 
-        <div class="col-sm-1">
           <button class="btn btn-primary" type="submit" name="action">
             Send
           </button>
-        </div>
+
       </div>
       <p class="text-danger" v-if="errorText">{{ errorText }}</p>
     </form>
@@ -32,6 +30,7 @@
 
 <script>
 import { db, collection, addDoc } from "@/firebase/init";
+import { mapGetters } from "vuex";
 import DiscordPicker from "vue3-discordpicker";
 
 export default {
@@ -52,9 +51,11 @@ export default {
   methods: {
     createMessage() {
       if (this.newMessage.length > 0) {
+        console.log('this.user', this.user.data.photoURL);
         const docData = {
           message: this.newMessage,
           name: this.name,
+          photoURL: this.user.data.photoURL || null,
           timestamp: Date.now(),
         };
 
@@ -76,5 +77,18 @@ export default {
       this.newMessage += " " + gif;
     },
   },
+  computed: {
+    // map `this.user` to `this.$store.getters.user`
+    ...mapGetters({
+      user: "user",
+    }),
+  },
 };
 </script>
+
+<style>
+.new-message-field {
+  display: flex;
+  gap:10px;
+}
+</style>

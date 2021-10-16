@@ -9,10 +9,24 @@
           [No messages yet!]
         </p>
         <div class="messages">
-          <div class="message" v-for="message in messages" :key="message.id">
-            <span class="text-info">[{{ message.name }}]: </span>
-            <span>{{ message.message }}</span>
-            <span class="text-secondary time">{{ message.timestamp }}</span>
+          <div
+            class="message"
+            v-for="message in messages"
+            :key="message.id"
+          >
+            <span class="col-1">
+              <div v-if="message.photoURL">
+                <img :src="message.photoURL" width="40" height="40" />
+              </div>
+              <div v-else>
+                <Avatar :size="40" :name="message.name" />
+              </div>
+            </span>
+            <span>
+              <span class="text-info">[{{ message.name }}]: </span>
+              <span>{{ message.message }}</span>
+              <span class="text-secondary time">{{ message.timestamp }}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -21,13 +35,17 @@
         <CreateMessage :name="user.data.displayName" />
       </div>
     </div>
-
-    <h6 class="text-secondary">Logged in as {{ user.data.displayName }}</h6>
-
-    <div class="player">
-      <Spotify />
-    </div>
   </div>
+
+  <div class="container about">
+      <p class="text-secondary" id="about-name">Logged in as {{ user.data.displayName }}</p>
+      <div v-if="user.data.photoURL">
+        <img :src="user.data.photoURL" width="50" height="50" />
+      </div>
+      <div v-else>
+        <Avatar :size="50" :name="user.displayName" />
+      </div>
+    </div>
 </template>
 
 <script>
@@ -35,12 +53,14 @@ import CreateMessage from "@/components/CreateMessage";
 import { db, collection, query, orderBy, onSnapshot } from "@/firebase/init";
 import moment from "moment";
 import { mapGetters } from "vuex";
+import Avatar from "vue-boring-avatars";
 
 export default {
   name: "Chat",
   props: ["name"],
   components: {
     CreateMessage,
+    Avatar,
   },
   data() {
     return {
@@ -55,6 +75,7 @@ export default {
           let doc = change.doc;
           this.messages.push({
             id: doc.id,
+            photoURL: doc.data().photoURL,
             name: doc.data().name,
             message: doc.data().message,
             timestamp: moment(doc.data().timestamp).format("LTS"),
@@ -66,9 +87,9 @@ export default {
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user"
-    })
-  }
+      user: "user",
+    }),
+  },
 };
 </script>
 
@@ -93,7 +114,23 @@ export default {
   overflow: auto;
 }
 
+.about {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#about-name {
+  align-self: center;
+  margin-bottom: 0px;
+}
+
 .message {
   text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
+
 </style>

@@ -20,6 +20,7 @@
     "moment": "^2.29.1",
     "poppers": "^0.1.2",
     "vue": "^3.0.0",
+    "vue-boring-avatars": "^1.0.0",
     "vue-router": "^4.0.0-0",
     "vue3-discordpicker": "^1.1.0",
     "vuex": "^4.0.2"

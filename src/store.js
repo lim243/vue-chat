@@ -28,6 +28,7 @@ const store = createStore({
       if (user) {
         commit("SET_USER", {
           displayName: user.displayName,
+          photoURL: user.photoURL,
           email: user.email,
         });
       } else {
