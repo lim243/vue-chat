@@ -17,7 +17,7 @@
         <ul class="navbar-nav mr-auto"></ul>
         <ul class="navbar-nav ml-auto">
           <template v-if="user.loggedIn">
-            <router-link to="/chat" class="navbar-brand">Chat</router-link>
+            <router-link to="/main" class="navbar-brand">Chat</router-link>
             <li class="nav-item">
               <a class="nav-link" @click.prevent="logout">Sign out</a>
             </li>
@@ -38,6 +38,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { getAuth, signOut } from "@/firebase/init";
+import store from "../store";
+
 export default {
   computed: {
     ...mapGetters({
@@ -49,6 +51,7 @@ export default {
     logout() {
       const auth = getAuth();
       signOut(auth).then(() => {
+        store.dispatch("logout");
         this.$router.push({
           name: "Home",
         });

@@ -1,19 +1,12 @@
 <template>
   <div class="container chat">
-    <h2 class="text-primary text-center">Epik Chat</h2>
-    <h5 class="text-secondary text-center">Powered by Vue.js and Firebase</h5>
-
-    <div class="card">
+    <div class="card message-card">
       <div class="card-body">
         <p class="text-secondary nomessages" v-if="messages.length == 0">
           [No messages yet!]
         </p>
         <div class="messages">
-          <div
-            class="message"
-            v-for="message in messages"
-            :key="message.id"
-          >
+          <div class="message" v-for="message in messages" :key="message.id">
             <span class="col-1">
               <div v-if="message.photoURL">
                 <img :src="message.photoURL" width="40" height="40" />
@@ -31,25 +24,27 @@
         </div>
       </div>
 
-      <div class="card-action">
-        <CreateMessage :name="user.data.displayName" />
-      </div>
+      <!-- <div class="card-action">
+        <CreateMessage :name="this.user.data.displayName" />
+      </div> -->
     </div>
   </div>
 
-  <div class="container about">
-      <p class="text-secondary" id="about-name">Logged in as {{ user.data.displayName }}</p>
-      <div v-if="user.data.photoURL">
-        <img :src="user.data.photoURL" width="50" height="50" />
-      </div>
-      <div v-else>
-        <Avatar :size="50" :name="user.displayName" />
-      </div>
+  <!-- <div class="container about">
+    <p class="text-secondary" id="about-name">
+      Logged in as {{ this.user.data.displayName }}
+    </p>
+    <div v-if="user.data.photoURL">
+      <img :src="user.data.photoURL" width="50" height="50" />
     </div>
+    <div v-else>
+      <Avatar :size="50" :name="this.user.displayName" />
+    </div>
+  </div> -->
 </template>
 
 <script>
-import CreateMessage from "@/components/CreateMessage";
+// import CreateMessage from "@/components/CreateMessage";
 import { db, collection, query, orderBy, onSnapshot } from "@/firebase/init";
 import moment from "moment";
 import { mapGetters } from "vuex";
@@ -59,7 +54,7 @@ export default {
   name: "Chat",
   props: ["name"],
   components: {
-    CreateMessage,
+    // CreateMessage,
     Avatar,
   },
   data() {
@@ -133,4 +128,7 @@ export default {
   align-items: center;
 }
 
+.message-card {
+  height: 85vh;
+}
 </style>

@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Chat from "../views/Chat.vue";
 import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
+import Main from "../views/Main.vue";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+  },
+  {
+    path: "/main",
+    name: "Main",
+    component: Main,
   },
   {
     path: "/chat",

@@ -22,6 +22,7 @@
     "vue": "^3.0.0",
     "vue-boring-avatars": "^1.0.0",
     "vue-router": "^4.0.0-0",
+    "vue-sidebar-menu": "^5.1.2",
     "vue3-discordpicker": "^1.1.0",
     "vuex": "^4.0.2"
   },

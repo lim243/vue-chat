@@ -2,26 +2,22 @@
   <div class="container">
     <form class="inline" @submit.prevent="createMessage">
       <div class="form-group new-message-field">
+        <input
+          type="text"
+          class="form-control"
+          name="message"
+          placeholder="Enter something here..."
+          v-model="newMessage"
+        />
 
-          <input
-            type="text"
-            class="form-control"
-            name="message"
-            placeholder="Enter something here..."
-            v-model="newMessage"
-          />
+        <DiscordPicker
+          :showEmoji="showEmoji"
+          :apiKey="apiKey"
+          @emoji="setEmoji"
+          class="picker"
+        />
 
-          <DiscordPicker
-            :showEmoji="showEmoji"
-            :apiKey="apiKey"
-            @emoji="setEmoji"
-            class= "picker"
-          />
-
-          <button class="btn btn-primary" type="submit" name="action">
-            Send
-          </button>
-
+        <button class="btn btn-primary" type="submit" name="action">Send</button>
       </div>
       <p class="text-danger" v-if="errorText">{{ errorText }}</p>
     </form>
@@ -51,7 +47,7 @@ export default {
   methods: {
     createMessage() {
       if (this.newMessage.length > 0) {
-        console.log('this.user', this.user.data.photoURL);
+        console.log("this.user", this.user.data.photoURL);
         const docData = {
           message: this.newMessage,
           name: this.name,
@@ -89,6 +85,6 @@ export default {
 <style>
 .new-message-field {
   display: flex;
-  gap:10px;
+  gap: 10px;
 }
 </style>

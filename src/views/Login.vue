@@ -45,6 +45,7 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
 } from "@/firebase/init";
+import store from "../store";
 
 export default {
   name: "login",
@@ -64,19 +65,16 @@ export default {
           // Signed in
           const user = userCredential.user;
           console.log("user signned in", user);
+          store.dispatch("fetchUser", user);
           this.$router.push({
-            name: "Chat",
+            name: "Main",
           });
           // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(
-            "error in sign in with password ",
-            errorCode,
-            errorMessage
-          );
+          console.log("error in sign in with password ", errorCode, errorMessage);
         });
     },
     googleSignIn() {
@@ -90,8 +88,9 @@ export default {
           // The signed-in user info.
           const user = result.user;
           console.log("user, token", user, token);
+          store.dispatch("fetchUser", user);
           this.$router.push({
-            name: "Chat",
+            name: "Main",
           });
           // ...
         })
@@ -105,13 +104,7 @@ export default {
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
 
-          console.log(
-            "error in Google",
-            errorCode,
-            errorMessage,
-            email,
-            credential
-          );
+          console.log("error in Google", errorCode, errorMessage, email, credential);
         });
     },
     githubSignIn() {
@@ -127,9 +120,10 @@ export default {
           // The signed-in user info.
           const user = result.user;
 
-          console.log('github token', token, user);
+          console.log("github token", token, user);
+          store.dispatch("fetchUser", user);
           this.$router.push({
-            name: "Chat",
+            name: "Main",
           });
           // ...
         })
@@ -141,7 +135,7 @@ export default {
           const email = error.email;
           // The AuthCredential type that was used.
           const credential = GithubAuthProvider.credentialFromError(error);
-          console.log('errorCode in github', errorCode, errorMessage, email, credential);
+          console.log("errorCode in github", errorCode, errorMessage, email, credential);
           // ...
         });
     },
