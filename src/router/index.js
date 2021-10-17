@@ -32,18 +32,10 @@ const routes = [
     name: "Chat",
     component: Chat,
     props: true,
-    // beforeEnter: (to, from, next) => {
-    //   console.log("to", to);
-    //   if (to.params.name) {
-    //     next();
-    //   } else {
-    //     next({ name: "Login" });
-    //   }
-    // },
   },
   {
     path: "/:catchAll(.*)",
-    component: NotFound,
+    component: Home,
   },
 ];
 
