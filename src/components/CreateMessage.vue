@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="create-message">
     <form class="inline" @submit.prevent="createMessage">
       <div class="form-group new-message-field">
         <input
@@ -90,5 +90,11 @@ export default {
 .new-message-field {
   display: flex;
   gap: 10px;
+}
+.create-message {
+  margin: 0.5em;
+}
+.vue3-discord-emojipicker__gifbutton {
+  display: none;
 }
 </style>

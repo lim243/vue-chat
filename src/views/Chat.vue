@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <!-- <div class="container about">
+  <div class="container about">
     <p class="text-secondary" id="about-name">
       Logged in as {{ this.user.data.displayName }}
     </p>
@@ -40,7 +40,7 @@
     <div v-else>
       <Avatar :size="50" :name="this.user.displayName" />
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script>
@@ -114,6 +114,9 @@ export default {
 </script>
 
 <style>
+.chat {
+  padding-top: 0.5em;
+}
 .chat h2 {
   font-size: 2.6em;
   margin-bottom: 0px;

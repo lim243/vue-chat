@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
     <div class="container">
-      <router-link to="/" class="navbar-brand">Home</router-link>
+      <router-link to="/" class="navbar-brand">Epik Chat</router-link>
       <button
         class="navbar-toggler"
         type="button"

@@ -31,9 +31,10 @@
         </form>
       </div>
     </div>
-
-    <button class="btn btn-danger" @click="googleSignIn">Google Sign In</button>
-    <button class="btn btn-dark" @click="githubSignIn">Github Sign In</button>
+    <div class="third-party-login">
+      <button class="btn btn-danger" @click="googleSignIn">Google Sign In</button>
+      <button class="btn btn-dark" @click="githubSignIn">Github Sign In</button>
+    </div>
   </div>
 </template>
 
@@ -150,6 +151,13 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.third-party-login {
+  display: flex;
+  flex-flow: column;
+  margin-left: 35%;
+  margin-right: 35%;
 }
 
 .btn {

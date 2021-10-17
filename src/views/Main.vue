@@ -20,11 +20,10 @@
         <Chat :roomId="this.currentRoom.id" />
       </span>
       <span v-else>
-        {{ "Please select a room" }}
+        <div class="alert alert-info" role="alert">
+          {{ "Please select a room" }}
+        </div>
       </span>
-    </div>
-    <div class="footer">
-      <h5 class="text-secondary text-center">Powered by Vue.js and Firebase</h5>
     </div>
   </div>
 </template>
@@ -117,7 +116,7 @@ export default {
   margin-bottom: 10px;
 }
 .sidebar {
-  border-right: 2px solid;
+  border-right: 1.5px solid rgba(108, 108, 108, 0.6);
 }
 
 .vsm--item {
@@ -127,5 +126,17 @@ export default {
 .footer {
   height: 5vh;
   margin: 10px;
+}
+
+.title {
+  border-bottom: 1.5px solid rgba(108, 108, 108, 0.6);
+}
+
+.vsm--menu {
+  padding: 5px;
+}
+.vsm--header {
+  font-size: 2em;
+  border-bottom: 0.5px solid rgba(108, 108, 108, 0.6);
 }
 </style>
