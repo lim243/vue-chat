@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { db, collection, addDoc } from "@/firebase/init";
+import { db, collection, setDoc, doc } from "@/firebase/init";
 import { mapGetters } from "vuex";
 import DiscordPicker from "vue3-discordpicker";
 
@@ -47,15 +47,18 @@ export default {
   methods: {
     createMessage() {
       if (this.newMessage.length > 0) {
-        console.log("this.user", this.user.data.photoURL);
         const docData = {
           message: this.newMessage,
           name: this.name,
           photoURL: this.user.data.photoURL || null,
           timestamp: Date.now(),
+          roomId: this.currentRoom.id,
         };
 
-        addDoc(collection(db, "messages"), docData);
+        // Save to database /rooms/roomId/messages/messageId
+        const roomsRef = collection(db, "rooms");
+        const messagesRef = collection(roomsRef, this.currentRoom.id, "messages");
+        setDoc(doc(messagesRef), docData);
 
         // Reset message form
         this.newMessage = "";
@@ -77,6 +80,7 @@ export default {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
       user: "user",
+      currentRoom: "currentRoom",
     }),
   },
 };

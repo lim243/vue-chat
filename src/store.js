@@ -8,6 +8,8 @@ const store = createStore({
         data: null,
       },
       rooms: [],
+      currentRoom: {},
+      messages: [],
     };
   },
   getters: {
@@ -16,6 +18,12 @@ const store = createStore({
     },
     rooms(state) {
       return state.rooms;
+    },
+    currentRoom(state) {
+      return state.currentRoom;
+    },
+    messages(state) {
+      return state.messages;
     },
   },
   mutations: {
@@ -26,20 +34,13 @@ const store = createStore({
       state.user.data = data;
     },
     SET_ROOMS(state, rooms) {
-      const defaultRooms = [
-        { header: "Rooms", hiddenOnCollapse: true },
-        { title: "Add Room" },
-        { href: "/Main", title: "General" },
-      ];
-
-      console.log("defaultRooms", defaultRooms);
-      console.log("state.rooms", state.rooms);
-      console.log("newRooms", rooms);
-      // Prepend the first 3 buttons to sidebar and append database rooms
       state.rooms = rooms;
     },
     ADD_ROOM(state, newRoom) {
       state.rooms = [...state.rooms, newRoom];
+    },
+    SET_ROOM(state, currentRoom) {
+      state.currentRoom = currentRoom;
     },
     LOGOUT_USER(state) {
       (state.user = {
@@ -51,6 +52,12 @@ const store = createStore({
           { title: "Add Room" },
           { href: "/Main", title: "General" },
         ]);
+    },
+    CLEAR_MESSAGES(state) {
+      state.messages = [];
+    },
+    ADD_MESSAGE(state, newMessage) {
+      state.messages.push(newMessage);
     },
   },
   actions: {
@@ -80,6 +87,19 @@ const store = createStore({
     },
     logout({ commit }) {
       commit("LOGOUT_USER");
+    },
+    setCurrentRoom({ commit }, room) {
+      if (room) {
+        commit("SET_ROOM", room);
+      }
+    },
+    clearMessages({ commit }) {
+      commit("CLEAR_MESSAGES");
+    },
+    addMessage({ commit }, message) {
+      if (message) {
+        commit("ADD_MESSAGE", message);
+      }
     },
   },
 });

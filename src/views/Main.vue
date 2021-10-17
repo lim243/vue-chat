@@ -2,20 +2,26 @@
   <div>
     <div class="title">
       <h2 class="text-primary text-center">Epik Chat</h2>
-      <h5 class="text-secondary text-center">{{ this.roomName }}</h5>
+      <h5 class="text-secondary text-center">
+        {{ this.currentRoom.title || "" }}
+      </h5>
     </div>
 
     <div class="main flex">
       <sidebar-menu
         :menu="this.rooms"
         @item-click="onItemClick"
-        @update:collapsed="onToggleCollapse"
-        :collapsed="this.collapsed"
-        relative="false"
         width="150px"
         class="sidebar"
       />
-      <Chat />
+
+      <!-- Conditional render chat room -->
+      <span v-if="Object.keys(this.currentRoom).length !== 0">
+        <Chat :roomId="this.currentRoom.id" />
+      </span>
+      <span v-else>
+        {{ "Please select a room" }}
+      </span>
     </div>
     <div class="footer">
       <h5 class="text-secondary text-center">Powered by Vue.js and Firebase</h5>
@@ -34,14 +40,7 @@ export default {
   components: { Chat },
   data() {
     return {
-      menu: [],
-      rooms: [
-        { header: "Rooms", hiddenOnCollapse: true },
-        { title: "Add Room" },
-        { href: "/Main", title: "General" },
-      ],
-      collapsed: false,
-      roomName: "general",
+      rooms: [{ header: "Rooms", hiddenOnCollapse: true }, { title: "Add Room" }],
     };
   },
   methods: {
@@ -54,19 +53,23 @@ export default {
       if (item.title === "Add Room") {
         const roomNumber = this.rooms.length - 2;
         this.addRoom(roomNumber);
+      } else {
+        this.findRoom(item.title);
       }
     },
-    onToggleCollapse(collapsed) {
-      console.log("collapsed", collapsed);
+    findRoom(title) {
+      const foundRoom = store.state.rooms.find((room) => room.title === title);
+      store.dispatch("setCurrentRoom", foundRoom);
+
+      return foundRoom;
     },
-    addRoom(roomNumber) {
+
+    async addRoom(roomNumber) {
       const roomName = "Room #" + roomNumber.toString();
 
       const docData = {
         title: roomName,
-        messages: [],
       };
-
       // Add to DB
       addDoc(collection(db, "rooms"), docData);
 
@@ -80,12 +83,10 @@ export default {
     onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          console.log("incoming room?");
           let doc = change.doc;
           let room = {
             id: doc.id,
             title: doc.data().title,
-            messages: doc.data().messages,
           };
           this.rooms.push(room);
         }
@@ -98,6 +99,7 @@ export default {
     ...mapGetters({
       user: "user",
       rooms: "rooms",
+      currentRoom: "currentRoom",
     }),
   },
 };
@@ -107,6 +109,12 @@ export default {
 .main {
   display: flex; /* or inline-flex */
   height: 85vh;
+  flex-wrap: wrap;
+}
+
+.main > span {
+  flex: 50%;
+  margin-bottom: 10px;
 }
 .sidebar {
   border-right: 2px solid;

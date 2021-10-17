@@ -24,9 +24,9 @@
         </div>
       </div>
 
-      <!-- <div class="card-action">
+      <div class="card-action">
         <CreateMessage :name="this.user.data.displayName" />
-      </div> -->
+      </div>
     </div>
   </div>
 
@@ -44,46 +44,71 @@
 </template>
 
 <script>
-// import CreateMessage from "@/components/CreateMessage";
-import { db, collection, query, orderBy, onSnapshot } from "@/firebase/init";
+import CreateMessage from "@/components/CreateMessage";
+import { db, query, where, onSnapshot, collectionGroup, orderBy } from "@/firebase/init";
 import moment from "moment";
 import { mapGetters } from "vuex";
+import store from "../store";
 import Avatar from "vue-boring-avatars";
 
 export default {
   name: "Chat",
-  props: ["name"],
   components: {
-    // CreateMessage,
+    CreateMessage,
     Avatar,
   },
-  data() {
-    return {
-      messages: [],
-    };
+
+  methods: {
+    getMessages(roomId) {
+      const messagesQ = query(
+        collectionGroup(db, "messages"),
+        where("roomId", "==", roomId),
+        orderBy("timestamp")
+      );
+
+      // Listen to live updates from database
+      onSnapshot(messagesQ, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            let doc = change.doc;
+
+            if (doc.data().roomId == roomId) {
+              let newMsg = {
+                id: doc.id,
+                photoURL: doc.data().photoURL,
+                roomId: doc.data().roomId,
+                name: doc.data().name,
+                message: doc.data().message,
+                timestamp: moment(doc.data().timestamp).format("LTS"),
+              };
+              store.dispatch("addMessage", newMsg);
+            }
+          }
+        });
+      });
+    },
   },
   created() {
-    const q = query(collection(db, "messages"), orderBy("timestamp"));
-    onSnapshot(q, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          let doc = change.doc;
-          this.messages.push({
-            id: doc.id,
-            photoURL: doc.data().photoURL,
-            name: doc.data().name,
-            message: doc.data().message,
-            timestamp: moment(doc.data().timestamp).format("LTS"),
-          });
-        }
-      });
-    });
+    this.getMessages(this.currentRoom.id);
   },
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
       user: "user",
+      currentRoom: "currentRoom",
+      rooms: "rooms",
+      messages: "messages",
     }),
+
+    getRoom() {
+      return store.state.currentRoom;
+    },
+  },
+  watch: {
+    getRoom(newRoom) {
+      store.dispatch("clearMessages");
+      this.getMessages(newRoom.id);
+    },
   },
 };
 </script>
@@ -105,7 +130,7 @@ export default {
   font-size: 0.7em;
 }
 .messages {
-  max-height: 300px;
+  /* max-height: 300px; */
   overflow: auto;
 }
 

@@ -9,6 +9,8 @@ import {
   doc,
   setDoc,
   addDoc,
+  collectionGroup,
+  getDocs,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -50,4 +52,6 @@ export {
   GoogleAuthProvider,
   signInWithPopup,
   GithubAuthProvider,
+  collectionGroup,
+  getDocs,
 };
