@@ -7,10 +7,14 @@ A simple lightweight chat application powered by Vue3 and Firebase v9
 Incorporated Firebase Auth Methods (Github, Google, Basic email password)
 
 ## Project setup
-
 ```
 npm install
 ```
+
+## Setup Firebase
+Get firebase key `firebaseConfig.js` from Andrew
+
+Add file to `src/firebase/firebaseConfig.js`
 
 ### Compiles and hot-reloads for development
 
